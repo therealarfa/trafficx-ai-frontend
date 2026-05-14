@@ -1,0 +1,139 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #0a0e17;
+  color: #ffffff;
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0d1321;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e3a5f;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #0ea5e9;
+}
+
+.glass-card {
+  background: rgba(13, 19, 33, 0.7);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(14, 165, 233, 0.15);
+  border-radius: 16px;
+  transition: all 0.3s ease;
+}
+
+.glass-card:hover {
+  border-color: rgba(14, 165, 233, 0.4);
+  box-shadow: 0 0 30px rgba(14, 165, 233, 0.1);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #0ea5e9, #06b6d4, #10b981);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.bg-animated {
+  background: linear-gradient(-45deg, #0a0e17, #0d1321, #111827, #0a1628);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.glow-btn {
+  background: linear-gradient(135deg, #0ea5e9, #06b6d4);
+  border: none;
+  border-radius: 12px;
+  padding: 12px 32px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.glow-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 30px rgba(14, 165, 233, 0.5);
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  animation: blink 2s infinite;
+}
+
+.status-dot.online {
+  background: #10b981;
+  box-shadow: 0 0 10px #10b981;
+}
+
+.status-dot.offline {
+  background: #ef4444;
+  box-shadow: 0 0 10px #ef4444;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.particles-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: rgba(14, 165, 233, 0.3);
+  border-radius: 50%;
+  animation: float 15s infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(100vh) translateX(0);
+    opacity: 0;
+  }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% {
+    transform: translateY(-10vh) translateX(100px);
+    opacity: 0;
+  }
+}
