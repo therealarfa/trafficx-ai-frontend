@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { HiDocumentReport, HiDownload, HiCalendar, HiPrinter } from 'react-icons/hi';
 import API from '../api/axios';
-
+import jsPDF from 'jspdf';
 const Reports = () => {
   const [report, setReport] = useState(null);
 
@@ -110,8 +110,66 @@ const Reports = () => {
                   <HiDocumentReport className="text-primary" size={20} />
                   <span className="text-sm text-gray-300">Daily Report - {date.toISOString().split('T')[0]}</span>
                 </div>
-                <button className="text-primary text-sm hover:underline flex items-center gap-1">
-                  <HiDownload /> Download
+<button 
+  onClick={() => {
+    const reportDate = date.toISOString().split('T')[0];
+    const doc = new jsPDF();
+    doc.setFillColor(6, 182, 212);
+    doc.rect(0, 0, 210, 30, 'F');
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(22);
+    doc.setFont('helvetica', 'bold');
+    doc.text('TrafficX AI', 105, 15, { align: 'center' });
+    doc.setFontSize(12);
+    doc.text('Daily Traffic Report', 105, 23, { align: 'center' });
+    
+    doc.setTextColor(0, 0, 0);
+    doc.setFontSize(14);
+    doc.setFont('helvetica', 'bold');
+    doc.text(`Report Date: ${reportDate}`, 20, 45);
+    
+    doc.setFontSize(11);
+    doc.setFont('helvetica', 'normal');
+    doc.text(`Total Vehicles: ${report.total_vehicles}`, 20, 60);
+    doc.text(`Peak Hour: ${report.peak_hour}`, 20, 70);
+    doc.text(`Average Congestion: ${report.avg_congestion}%`, 20, 80);
+    doc.text(`Total Alerts: ${report.total_alerts}`, 20, 90);
+    doc.text(`Emergency Alerts: ${report.emergency_alerts}`, 20, 100);
+    
+    doc.setFontSize(14);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Vehicle Breakdown:', 20, 120);
+    
+    doc.setFontSize(11);
+    doc.setFont('helvetica', 'normal');
+    doc.text(`Cars: ${report.vehicle_breakdown.car}`, 25, 132);
+    doc.text(`Motorcycles: ${report.vehicle_breakdown.motorcycle}`, 25, 142);
+    doc.text(`Buses: ${report.vehicle_breakdown.bus}`, 25, 152);
+    doc.text(`Trucks: ${report.vehicle_breakdown.truck}`, 25, 162);
+    doc.text(`Rickshaws: ${report.vehicle_breakdown.rickshaw}`, 25, 172);
+    
+    doc.setFontSize(14);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Congestion by Area:', 20, 190);
+    
+    doc.setFontSize(11);
+    doc.setFont('helvetica', 'normal');
+    let yPos = 202;
+    report.congestion_by_area.forEach(area => {
+      doc.text(`${area.area}: ${area.percentage}%`, 25, yPos);
+      yPos += 10;
+    });
+    
+    doc.setFillColor(6, 182, 212);
+    doc.rect(0, 280, 210, 17, 'F');
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(9);
+    doc.text('© 2026 TrafficX AI', 105, 290, { align: 'center' });
+    
+    doc.save(`Daily_Report_${reportDate}.pdf`);
+  }}
+  className="text-primary text-sm hover:underline flex items-center gap-1"
+>                  <HiDownload /> Download
                 </button>
               </div>
             );
