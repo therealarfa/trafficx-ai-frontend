@@ -1,12 +1,57 @@
-import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { HiMenu, HiX, HiBell } from 'react-icons/hi';
-import { FaRobot } from 'react-icons/fa';
+import React, { useState, useRef, useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { HiMenu, HiX, HiBell, HiExclamation } from 'react-icons/hi';
+import { FaRobot, FaAmbulance, FaCarCrash, FaTrafficLight } from 'react-icons/fa';
 
 const Navbar = ({ sidebarOpen, setSidebarOpen }) => {
   const location = useLocation();
-  const [notifications] = useState(3);
+  const navigate = useNavigate();
   const [systemOnline] = useState(true);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const dropdownRef = useRef(null);
+
+  const [notifications, setNotifications] = useState([
+    { id: 1, type: 'emergency', title: 'Emergency Vehicle Detected', location: 'Canal Road - Kalma Chowk', time: '2 min ago', read: false },
+    { id: 2, type: 'congestion', title: 'High Congestion Alert', location: 'Mall Road - GPO', time: '5 min ago', read: false },
+    { id: 3, type: 'accident', title: 'Possible Accident Detected', location: 'Ring Road', time: '8 min ago', read: false },
+  ]);
+
+  const unreadCount = notifications.filter(n => !n.read).length;
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setShowNotifications(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const getIcon = (type) => {
+    if (type === 'emergency') return <FaAmbulance className="text-red-400" size={18} />;
+    if (type === 'accident') return <FaCarCrash className="text-orange-400" size={18} />;
+    if (type === 'congestion') return <FaTrafficLight className="text-yellow-400" size={18} />;
+    return <HiExclamation className="text-blue-400" size={18} />;
+  };
+
+  const markAsRead = (id) => {
+    setNotifications(notifications.map(n => n.id === id ? {...n, read: true} : n));
+  };
+
+  const markAllAsRead = () => {
+    setNotifications(notifications.map(n => ({...n, read: true})));
+  };
+
+  const clearAll = () => {
+    setNotifications([]);
+  };
+
+  const handleNotificationClick = (id) => {
+    markAsRead(id);
+    setShowNotifications(false);
+    navigate('/alerts');
+  };
 
   const navLinks = [
     { name: 'Home', path: '/' },
@@ -60,15 +105,114 @@ const Navbar = ({ sidebarOpen, setSidebarOpen }) => {
               {systemOnline ? 'AI Online' : 'Offline'}
             </span>
           </div>
+<button
+  onClick={() => {
+    const newNotif = {
+      id: Date.now(),
+      type: 'emergency',
+      title: 'New Emergency Alert',
+      location: 'Test Location - Lahore',
+      time: 'Just now',
+      read: false
+    };
+    setNotifications([newNotif, ...notifications]);
+const audio = new Audio('/sounds/sound.mp3');
+    audio.play().catch(() => {});
+  }}
+  className="p-2 rounded-lg bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-400 transition-colors"
+  title="Add Test Notification"
+>
+  +
+</button>
+          <div className="relative" ref={dropdownRef}>
+            <button 
+              onClick={() => setShowNotifications(!showNotifications)}
+              className="relative p-2 rounded-lg hover:bg-dark-600 transition-colors"
+            >
+              <HiBell size={22} className="text-gray-400" />
+              {unreadCount > 0 && (
+                <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full text-xs flex items-center justify-center font-bold animate-pulse">
+                  {unreadCount}
+                </span>
+              )}
+            </button>
 
-          <button className="relative p-2 rounded-lg hover:bg-dark-600 transition-colors">
-            <HiBell size={22} className="text-gray-400" />
-            {notifications > 0 && (
-              <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full text-xs flex items-center justify-center font-bold">
-                {notifications}
-              </span>
+            {showNotifications && (
+              <div className="absolute right-0 mt-2 w-96 bg-gray-900 border border-cyan-500/30 rounded-xl shadow-2xl overflow-hidden z-[9999]">
+                <div className="bg-gradient-to-r from-cyan-600 to-blue-600 p-4 flex justify-between items-center">
+                  <div>
+                    <h3 className="text-white font-bold">Notifications</h3>
+                    <p className="text-cyan-100 text-xs">{unreadCount} unread</p>
+                  </div>
+                  <div className="flex gap-2">
+                    {unreadCount > 0 && (
+                      <button 
+                        onClick={markAllAsRead}
+                        className="text-white text-xs bg-white/20 hover:bg-white/30 px-2 py-1 rounded transition"
+                      >
+                        Mark all read
+                      </button>
+                    )}
+                    {notifications.length > 0 && (
+                      <button 
+                        onClick={clearAll}
+                        className="text-white text-xs bg-red-500/30 hover:bg-red-500/50 px-2 py-1 rounded transition"
+                      >
+                        Clear
+                      </button>
+                    )}
+                  </div>
+                </div>
+
+                <div className="max-h-96 overflow-y-auto">
+                  {notifications.length === 0 ? (
+                    <div className="p-8 text-center text-gray-500">
+                      <HiBell size={40} className="mx-auto mb-2 opacity-30" />
+                      <p>No notifications</p>
+                    </div>
+                  ) : (
+                    notifications.map((notif) => (
+                      <div
+                        key={notif.id}
+                        onClick={() => handleNotificationClick(notif.id)}
+                        className={`p-4 border-b border-gray-800 hover:bg-gray-800/50 cursor-pointer transition ${
+                          !notif.read ? 'bg-cyan-500/5 border-l-4 border-l-cyan-500' : ''
+                        }`}
+                      >
+                        <div className="flex items-start gap-3">
+                          <div className="mt-1">{getIcon(notif.type)}</div>
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2">
+                              <h4 className={`font-semibold text-sm ${notif.read ? 'text-gray-400' : 'text-white'}`}>
+                                {notif.title}
+                              </h4>
+                              {!notif.read && (
+                                <span className="w-2 h-2 bg-cyan-500 rounded-full animate-pulse"></span>
+                              )}
+                            </div>
+                            <p className="text-xs text-gray-500 mt-1">📍 {notif.location}</p>
+                            <p className="text-xs text-gray-600 mt-1">🕐 {notif.time}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+
+                <div className="bg-gray-800/50 p-3 text-center border-t border-gray-700">
+                  <button
+                    onClick={() => {
+                      setShowNotifications(false);
+                      navigate('/alerts');
+                    }}
+                    className="text-cyan-400 text-sm font-semibold hover:text-cyan-300 transition"
+                  >
+                    View All Alerts →
+                  </button>
+                </div>
+              </div>
             )}
-          </button>
+          </div>
 
           <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-green-400 flex items-center justify-center cursor-pointer">
             <span className="text-sm font-bold">A</span>
