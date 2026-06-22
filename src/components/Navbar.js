@@ -8,6 +8,8 @@ const Navbar = ({ sidebarOpen, setSidebarOpen }) => {
   const navigate = useNavigate();
   const [systemOnline] = useState(true);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
+const profileRef = useRef(null);
   const dropdownRef = useRef(null);
 
   const [notifications, setNotifications] = useState([
@@ -19,15 +21,18 @@ const Navbar = ({ sidebarOpen, setSidebarOpen }) => {
   const unreadCount = notifications.filter(n => !n.read).length;
 
   useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-        setShowNotifications(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
+  const handleClickOutside = (e) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+      setShowNotifications(false);
+    }
+    if (profileRef.current && !profileRef.current.contains(e.target)) {
+      setShowProfile(false);
+    }
+  };
+  document.addEventListener('mousedown', handleClickOutside);
+  return () => document.removeEventListener('mousedown', handleClickOutside);
+}, []);
+   
   const getIcon = (type) => {
     if (type === 'emergency') return <FaAmbulance className="text-red-400" size={18} />;
     if (type === 'accident') return <FaCarCrash className="text-orange-400" size={18} />;
@@ -214,9 +219,63 @@ const audio = new Audio('/sounds/sound.mp3');
             )}
           </div>
 
-          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-green-400 flex items-center justify-center cursor-pointer">
-            <span className="text-sm font-bold">A</span>
-          </div>
+          <div className="relative" ref={profileRef}>
+  <button
+    onClick={() => setShowProfile(!showProfile)}
+    className="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-green-400 flex items-center justify-center cursor-pointer hover:scale-110 transition"
+  >
+    <span className="text-sm font-bold">A</span>
+  </button>
+
+  {showProfile && (
+    <div className="absolute right-0 mt-2 w-72 bg-gray-900 border border-cyan-500/30 rounded-xl shadow-2xl overflow-hidden z-[9999]">
+      <div className="bg-gradient-to-r from-cyan-600 to-blue-600 p-5 text-center">
+        <div className="w-16 h-16 rounded-full bg-white/20 mx-auto flex items-center justify-center mb-2 border-2 border-white">
+          <span className="text-2xl font-bold text-white">A</span>
+        </div>
+        <h3 className="text-white font-bold">Arfa Jamil</h3>
+        <p className="text-cyan-100 text-xs">arfajameel385@gmail.com</p>
+        <span className="inline-block mt-2 px-3 py-1 bg-white/20 rounded-full text-xs text-white font-bold">
+          Founder & CEO
+        </span>
+      </div>
+
+      <div className="py-2">
+        <button
+          onClick={() => {
+            setShowProfile(false);
+            navigate('/about');
+          }}
+          className="w-full px-5 py-3 text-left hover:bg-gray-800 flex items-center gap-3 text-gray-300 hover:text-white transition"
+        >
+          <span>👤</span>
+          <span>About Me</span>
+        </button>
+        <button
+          onClick={() => {
+            setShowProfile(false);
+            navigate('/settings');
+          }}
+          className="w-full px-5 py-3 text-left hover:bg-gray-800 flex items-center gap-3 text-gray-300 hover:text-white transition"
+        >
+          <span>⚙️</span>
+          <span>Settings</span>
+        </button>
+        <button
+          onClick={() => {
+            setShowProfile(false);
+            navigate('/contact');
+          }}
+          className="w-full px-5 py-3 text-left hover:bg-gray-800 flex items-center gap-3 text-gray-300 hover:text-white transition"
+        >
+          <span>📧</span>
+          <span>Contact Support</span>
+        </button>
+        
+      </div>
+    </div>
+  )}
+</div>
         </div>
       </div>
     </nav>

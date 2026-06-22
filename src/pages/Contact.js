@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { HiMail, HiPhone, HiLocationMarker, HiClock } from 'react-icons/hi';
-import { FaFacebook, FaTwitter, FaLinkedin, FaGithub } from 'react-icons/fa';
+import { FaFacebook, FaWhatsapp, FaGithub } from 'react-icons/fa';
 import API from '../api/axios';
 import toast from 'react-hot-toast';
 
@@ -29,10 +29,9 @@ const Contact = () => {
   };
 
   const socialLinks = [
-    { icon: FaFacebook, label: 'Facebook', color: 'hover:text-blue-500' },
-    { icon: FaTwitter, label: 'Twitter', color: 'hover:text-sky-400' },
-    { icon: FaLinkedin, label: 'LinkedIn', color: 'hover:text-blue-400' },
-    { icon: FaGithub, label: 'GitHub', color: 'hover:text-gray-300' },
+    { icon: FaFacebook, label: 'Facebook', color: 'hover:text-blue-500', url: 'https://www.facebook.com/share/193rn2euKF/' },
+    { icon: FaWhatsapp, label: 'WhatsApp', color: 'hover:text-green-500', url: 'https://wa.me/923198931313' },
+    { icon: FaGithub, label: 'GitHub', color: 'hover:text-gray-300', url: 'https://github.com/therealarfa' },
   ];
 
   return (
@@ -51,7 +50,13 @@ const Contact = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="flex flex-col items-center gap-4">
           {socialLinks.map((social, idx) => (
-            <a key={idx} href="#contact" className={`glass-card p-4 w-full flex items-center gap-4 transition-all hover:border-primary/40 ${social.color}`}>
+            <a 
+              key={idx} 
+              href={social.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`glass-card p-4 w-full flex items-center gap-4 transition-all hover:border-primary/40 hover:scale-105 ${social.color}`}
+            >
               <social.icon size={28} />
               <span className="font-medium text-gray-300">{social.label}</span>
             </a>
@@ -82,14 +87,20 @@ const Contact = () => {
                   <p className="text-sm text-gray-500">(Smart Traffic Control Center)</p>
                 </div>
               </div>
-              <div className="flex items-center gap-3">
-                <HiMail className="text-primary flex-shrink-0" size={20} />
-                <p className="text-gray-300">support@trafficxai.com</p>
-              </div>
-              <div className="flex items-center gap-3">
-                <HiPhone className="text-primary flex-shrink-0" size={20} />
-                <p className="text-gray-300">+92-300-xxxxxxx</p>
-              </div>
+              <a 
+  href="mailto:arfajameel385@gmail.com"
+  className="flex items-center gap-3 hover:text-primary transition-colors group"
+>
+  <HiMail className="text-primary flex-shrink-0 group-hover:scale-110 transition" size={20} />
+  <p className="text-gray-300 group-hover:text-primary">arfajameel385@gmail.com</p>
+</a>
+             <a 
+  href="tel:+923198931313"
+  className="flex items-center gap-3 hover:text-primary transition-colors group"
+>
+  <HiPhone className="text-primary flex-shrink-0 group-hover:scale-110 transition" size={20} />
+  <p className="text-gray-300 group-hover:text-primary">+92-319-8931313</p>
+</a>
               <div className="flex items-center gap-3">
                 <HiClock className="text-primary flex-shrink-0" size={20} />
                 <p className="text-gray-300">24/7 AI Monitoring</p>

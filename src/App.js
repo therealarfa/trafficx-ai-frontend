@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import Navbar from './components/Navbar';
@@ -14,18 +14,42 @@ import Settings from './pages/Settings';
 import ParticlesBackground from './components/ParticlesBackground';
 
 function App() {
-  const [sidebarOpen, setSidebarOpen] = React.useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [darkMode, setDarkMode] = useState(true);
+
+  useEffect(() => {
+    const saved = localStorage.getItem('trafficx_settings');
+    if (saved) {
+      const settings = JSON.parse(saved);
+      setDarkMode(settings.darkMode);
+    }
+
+    const handleStorageChange = () => {
+      const updated = localStorage.getItem('trafficx_settings');
+      if (updated) {
+        const settings = JSON.parse(updated);
+        setDarkMode(settings.darkMode);
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    window.addEventListener('settingsChanged', handleStorageChange);
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('settingsChanged', handleStorageChange);
+    };
+  }, []);
 
   return (
     <Router>
-      <div className="min-h-screen bg-animated relative">
-        <ParticlesBackground />
+      <div className={`min-h-screen relative ${darkMode ? 'bg-animated' : 'bg-light-mode'}`}>
+        {darkMode && <ParticlesBackground />}
         <Toaster 
           position="top-right"
           toastOptions={{
             style: {
-              background: '#0d1321',
-              color: '#fff',
+              background: darkMode ? '#0d1321' : '#ffffff',
+              color: darkMode ? '#fff' : '#000',
               border: '1px solid rgba(14, 165, 233, 0.3)',
             },
           }}
