@@ -2,8 +2,11 @@ import React, { useState, useRef } from 'react';
 import { HiVideoCamera, HiUpload, HiPlay, HiRefresh } from 'react-icons/hi';
 import API from '../api/axios';
 import toast from 'react-hot-toast';
+import CameraModal from '../components/CameraModal';
 
 const LiveMonitoring = () => {
+  const [selectedCamera, setSelectedCamera] = useState(null);
+const [isModalOpen, setIsModalOpen] = useState(false);
   const [processing, setProcessing] = useState(false);
   const [results, setResults] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -74,8 +77,14 @@ const LiveMonitoring = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {cameras.map((cam) => (
-          <div key={cam.id} className="glass-card overflow-hidden group cursor-pointer hover:border-primary/40 transition-all">
-            <div className="relative aspect-video bg-dark-600">
+<div 
+  key={cam.id} 
+  onClick={() => {
+    setSelectedCamera(cam);
+    setIsModalOpen(true);
+  }}
+  className="glass-card overflow-hidden group cursor-pointer hover:border-primary/40 hover:scale-105 transition-all"
+>            <div className="relative aspect-video bg-dark-600">
               <img 
   src={cam.img}
   alt={cam.name}
@@ -159,6 +168,12 @@ const LiveMonitoring = () => {
           </div>
         )}
       </div>
+            {/* Camera Detail Modal */}
+      <CameraModal
+        camera={selectedCamera}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 };

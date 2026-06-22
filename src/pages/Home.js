@@ -12,6 +12,7 @@ import {
 } from 'chart.js';
 import StatsCard from '../components/StatsCard';
 import API from '../api/axios';
+import CameraModal from '../components/CameraModal';
 
 ChartJS.register(
   CategoryScale, LinearScale, PointElement, LineElement,
@@ -19,6 +20,8 @@ ChartJS.register(
 );
 
 const Home = () => {
+  const [selectedCamera, setSelectedCamera] = useState(null);
+const [isModalOpen, setIsModalOpen] = useState(false);
   const [stats, setStats] = useState({
     total_cameras: 4,
     total_vehicles_today: 12458,
@@ -154,8 +157,15 @@ const Home = () => {
   { name: 'Jail Road - Shimla Hill', img: '/images/jail-road.jpg' },
   { name: 'Ring Road - Thokar Niaz Baig', img: '/images/ring-road.jpg' }
 ].map((cam, idx) => (
-  <div key={idx} className="relative rounded-xl overflow-hidden border border-dark-500 group cursor-pointer">
-    <div className="aspect-video bg-dark-600 flex items-center justify-center relative">
+<div 
+  key={idx} 
+  onClick={() => {
+    setSelectedCamera(cam);
+    setIsModalOpen(true);
+  }}
+  className="relative rounded-xl overflow-hidden border border-dark-500 group cursor-pointer hover:scale-105 hover:border-cyan-500 transition-all"
+>
+      <div className="aspect-video bg-dark-600 flex items-center justify-center relative">
       <img 
         src={cam.img}
         alt={cam.name}
@@ -246,7 +256,15 @@ const Home = () => {
           <p className="text-sm text-gray-400 mb-1">Supported Cameras</p>
           <p className="text-3xl font-bold text-purple-400">124</p>
         </div>
+           
       </div>
+      
+      {/* Camera Detail Modal */}
+      <CameraModal
+        camera={selectedCamera}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 };
