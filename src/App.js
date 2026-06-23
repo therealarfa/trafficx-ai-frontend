@@ -59,8 +59,7 @@ function App() {
           <Sidebar isOpen={sidebarOpen} />
           <main className={`flex-1 transition-all duration-300 ${sidebarOpen ? 'ml-64' : 'ml-20'} mt-16 p-6 relative z-10`}>
             <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/monitoring" element={<LiveMonitoring />} />
+<Route path="/" element={<Home setSidebarOpen={setSidebarOpen} />} />              <Route path="/monitoring" element={<LiveMonitoring />} />
               <Route path="/analytics" element={<Analytics />} />
               <Route path="/alerts" element={<Alerts />} />
               <Route path="/reports" element={<Reports />} />

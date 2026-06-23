@@ -19,7 +19,7 @@ ChartJS.register(
   ArcElement, BarElement, Title, Tooltip, Legend, Filler
 );
 
-const Home = () => {
+const Home = ({ setSidebarOpen }) => {
   const [selectedCamera, setSelectedCamera] = useState(null);
 const [isModalOpen, setIsModalOpen] = useState(false);
   const [stats, setStats] = useState({
@@ -159,10 +159,11 @@ const [isModalOpen, setIsModalOpen] = useState(false);
 ].map((cam, idx) => (
 <div 
   key={idx} 
-  onClick={() => {
-    setSelectedCamera(cam);
-    setIsModalOpen(true);
-  }}
+ onClick={() => {
+  setSelectedCamera(cam);
+  setIsModalOpen(true);
+  setSidebarOpen(false);
+}}
   className="relative rounded-xl overflow-hidden border border-dark-500 group cursor-pointer hover:scale-105 hover:border-cyan-500 transition-all"
 >
       <div className="aspect-video bg-dark-600 flex items-center justify-center relative">
@@ -261,10 +262,13 @@ const [isModalOpen, setIsModalOpen] = useState(false);
       
       {/* Camera Detail Modal */}
       <CameraModal
-        camera={selectedCamera}
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      />
+  camera={selectedCamera}
+  isOpen={isModalOpen}
+  onClose={() => {
+    setIsModalOpen(false);
+    setSidebarOpen(true);
+  }}
+/>
     </div>
   );
 };
