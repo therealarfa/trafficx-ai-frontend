@@ -20,7 +20,7 @@ const Sidebar = ({ isOpen }) => {
   ];
 
   return (
-    <aside className={`fixed left-0 top-16 h-[calc(100vh-4rem)] bg-dark-800/90 backdrop-blur-xl border-r border-primary/10 transition-all duration-300 z-40 ${isOpen ? 'w-64' : 'w-20'}`}>
+<aside className={`fixed left-0 top-16 h-[calc(100vh-4rem)] bg-dark-800/90 backdrop-blur-xl border-r border-primary/10 transition-all duration-300 z-40 ${isOpen ? 'w-64 translate-x-0' : '-translate-x-full w-64'}`}>
       <div className="flex flex-col h-full py-4">
         <div className="flex-1 px-3 space-y-1">
           {menuItems.map((item) => {
