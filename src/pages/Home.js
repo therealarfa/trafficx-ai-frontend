@@ -111,17 +111,17 @@ const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <div className="space-y-6">
-      <div className="glass-card p-8 bg-gradient-to-r from-dark-800 to-dark-700 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
+<div className="glass-card p-4 sm:p-6 md:p-8 bg-gradient-to-r from-dark-800 to-dark-700 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
         <div className="relative z-10">
           <div className="flex items-center gap-3 mb-2">
             <div className="status-dot online" />
             <span className="text-sm text-green-400 font-medium">System Active</span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-3">
-            <span className="gradient-text">TrafficX AI</span>
+<h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3">
+              <span className="gradient-text">TrafficX AI</span>
           </h1>
-          <p className="text-xl text-gray-300 mb-6">AI-Based Smart Traffic Monitoring System</p>
+<p className="text-base sm:text-lg md:text-xl text-gray-300 mb-6">AI-Based Smart Traffic Monitoring System</p>
           <div className="flex flex-wrap gap-3">
             <Link to="/monitoring" className="glow-btn flex items-center gap-2">
               <HiLightningBolt /> Start Monitoring

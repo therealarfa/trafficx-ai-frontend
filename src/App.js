@@ -14,7 +14,8 @@ import Settings from './pages/Settings';
 import ParticlesBackground from './components/ParticlesBackground';
 
 function App() {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  // Desktop pe sidebar open by default, mobile pe close
+  const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 768);
   const [darkMode, setDarkMode] = useState(true);
 
   useEffect(() => {
@@ -24,6 +25,15 @@ function App() {
       setDarkMode(settings.darkMode);
     }
 
+    // Window resize handle karein
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setSidebarOpen(false);
+      } else {
+        setSidebarOpen(true);
+      }
+    };
+
     const handleStorageChange = () => {
       const updated = localStorage.getItem('trafficx_settings');
       if (updated) {
@@ -32,9 +42,11 @@ function App() {
       }
     };
 
+    window.addEventListener('resize', handleResize);
     window.addEventListener('storage', handleStorageChange);
     window.addEventListener('settingsChanged', handleStorageChange);
     return () => {
+      window.removeEventListener('resize', handleResize);
       window.removeEventListener('storage', handleStorageChange);
       window.removeEventListener('settingsChanged', handleStorageChange);
     };
@@ -56,9 +68,11 @@ function App() {
         />
         <Navbar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
         <div className="flex">
-          <Sidebar isOpen={sidebarOpen} />
-<main className={`flex-1 transition-all duration-300 ${sidebarOpen ? 'ml-64' : 'ml-0'} mt-16 p-6 relative z-10`}>            <Routes>
-<Route path="/" element={<Home setSidebarOpen={setSidebarOpen} />} />              <Route path="/monitoring" element={<LiveMonitoring />} />
+          <Sidebar isOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+          <main className={`flex-1 transition-all duration-300 ${sidebarOpen ? 'md:ml-64' : 'ml-0'} mt-16 p-3 md:p-6 relative z-10`}>
+            <Routes>
+              <Route path="/" element={<Home setSidebarOpen={setSidebarOpen} />} />
+              <Route path="/monitoring" element={<LiveMonitoring />} />
               <Route path="/analytics" element={<Analytics />} />
               <Route path="/alerts" element={<Alerts />} />
               <Route path="/reports" element={<Reports />} />
