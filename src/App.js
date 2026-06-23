@@ -66,10 +66,9 @@ function App() {
             },
           }}
         />
-        <Navbar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-        <div className="flex">
-          <Sidebar isOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-          <main className={`flex-1 transition-all duration-300 ${sidebarOpen ? 'md:ml-64' : 'ml-0'} mt-16 p-3 md:p-6 relative z-10`}>
+       <Navbar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+<div className="flex">
+  <main className="flex-1 mt-16 px-4 sm:px-6 md:px-8 py-6 relative z-10 max-w-7xl mx-auto w-full">
             <Routes>
               <Route path="/" element={<Home setSidebarOpen={setSidebarOpen} />} />
               <Route path="/monitoring" element={<LiveMonitoring />} />

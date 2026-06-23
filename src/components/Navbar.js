@@ -6,9 +6,9 @@ import { FaRobot, FaAmbulance, FaCarCrash, FaTrafficLight } from 'react-icons/fa
 const Navbar = ({ sidebarOpen, setSidebarOpen }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [systemOnline] = useState(true);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const profileRef = useRef(null);
   const dropdownRef = useRef(null);
 
@@ -32,7 +32,7 @@ const Navbar = ({ sidebarOpen, setSidebarOpen }) => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
-   
+
   const getIcon = (type) => {
     if (type === 'emergency') return <FaAmbulance className="text-red-400" size={18} />;
     if (type === 'accident') return <FaCarCrash className="text-orange-400" size={18} />;
@@ -41,11 +41,11 @@ const Navbar = ({ sidebarOpen, setSidebarOpen }) => {
   };
 
   const markAsRead = (id) => {
-    setNotifications(notifications.map(n => n.id === id ? {...n, read: true} : n));
+    setNotifications(notifications.map(n => n.id === id ? { ...n, read: true } : n));
   };
 
   const markAllAsRead = () => {
-    setNotifications(notifications.map(n => ({...n, read: true})));
+    setNotifications(notifications.map(n => ({ ...n, read: true })));
   };
 
   const clearAll = () => {
@@ -60,44 +60,36 @@ const Navbar = ({ sidebarOpen, setSidebarOpen }) => {
 
   const navLinks = [
     { name: 'Home', path: '/' },
-    { name: 'Live Monitoring', path: '/monitoring' },
-    { name: 'Analytics', path: '/analytics' },
-    { name: 'Reports', path: '/reports' },
+    { name: 'About', path: '/about' },
+    { name: 'Services', path: '/monitoring' },
+    { name: 'Contact', path: '/contact' },
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-dark-900/90 backdrop-blur-xl border-b border-primary/20">
-      <div className="flex items-center justify-between px-3 sm:px-4 py-3">
-        {/* LEFT SIDE - Logo & Menu */}
-        <div className="flex items-center gap-2 sm:gap-4 min-w-0">
-          <button 
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="p-2 rounded-lg hover:bg-dark-600 transition-colors flex-shrink-0"
-          >
-            {sidebarOpen ? <HiX size={24} /> : <HiMenu size={24} />}
-          </button>
-          
-          <Link to="/" className="flex items-center gap-2 sm:gap-3 min-w-0">
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center flex-shrink-0">
-              <FaRobot className="text-white text-lg sm:text-xl" />
-            </div>
-            <div className="min-w-0">
-              <h1 className="text-lg sm:text-xl font-bold gradient-text truncate">TrafficX</h1>
-              <p className="text-[10px] sm:text-xs text-gray-400 -mt-1 truncate hidden sm:block">AI Traffic System</p>
-            </div>
-          </Link>
-        </div>
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-dark-900/95 backdrop-blur-xl border-b border-primary/10">
+      <div className="max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 py-3">
+        
+        {/* LEFT - Logo */}
+        <Link to="/" className="flex items-center gap-2.5">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-lg shadow-primary/30">
+            <FaRobot className="text-white text-lg" />
+          </div>
+          <div>
+            <h1 className="text-lg font-bold gradient-text leading-tight">TrafficX</h1>
+            <p className="text-[10px] text-gray-500 leading-tight">AI Traffic System</p>
+          </div>
+        </Link>
 
-        {/* CENTER - Nav Links (Desktop only) */}
-        <div className="hidden lg:flex items-center gap-1">
+        {/* CENTER - Nav Links (Desktop) */}
+        <div className="hidden md:flex items-center gap-1">
           {navLinks.map((link) => (
             <Link
               key={link.path}
               to={link.path}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                 location.pathname === link.path
-                  ? 'bg-primary/20 text-primary'
-                  : 'text-gray-400 hover:text-white hover:bg-dark-600'
+                  ? 'text-primary'
+                  : 'text-gray-300 hover:text-primary'
               }`}
             >
               {link.name}
@@ -105,53 +97,25 @@ const Navbar = ({ sidebarOpen, setSidebarOpen }) => {
           ))}
         </div>
 
-        {/* RIGHT SIDE - Actions */}
-        <div className="flex items-center gap-1 sm:gap-3 flex-shrink-0">
-          {/* AI Online Status - hidden on small mobile */}
-          <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-dark-600/50 border border-dark-500">
-            <div className={`status-dot ${systemOnline ? 'online' : 'offline'}`} />
-            <span className="text-xs text-gray-300">
-              {systemOnline ? 'AI Online' : 'Offline'}
-            </span>
-          </div>
-
-          {/* Test Notification Button - hidden on small mobile */}
-          <button
-            onClick={() => {
-              const newNotif = {
-                id: Date.now(),
-                type: 'emergency',
-                title: 'New Emergency Alert',
-                location: 'Test Location - Lahore',
-                time: 'Just now',
-                read: false
-              };
-              setNotifications([newNotif, ...notifications]);
-              const audio = new Audio('/sounds/sound.mp3');
-              audio.play().catch(() => {});
-            }}
-            className="hidden sm:block p-2 rounded-lg bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-400 transition-colors"
-            title="Add Test Notification"
-          >
-            +
-          </button>
-
+        {/* RIGHT - Actions */}
+        <div className="flex items-center gap-2">
+          
           {/* Notifications Bell */}
           <div className="relative" ref={dropdownRef}>
-            <button 
+            <button
               onClick={() => setShowNotifications(!showNotifications)}
-              className="relative p-2 rounded-lg hover:bg-dark-600 transition-colors"
+              className="relative p-2 rounded-lg hover:bg-dark-700 transition-colors"
             >
-              <HiBell size={20} className="text-gray-400 sm:w-[22px] sm:h-[22px]" />
+              <HiBell size={22} className="text-gray-300" />
               {unreadCount > 0 && (
-                <span className="absolute -top-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 bg-red-500 rounded-full text-[10px] sm:text-xs flex items-center justify-center font-bold animate-pulse">
+                <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-red-500 rounded-full text-[10px] flex items-center justify-center font-bold text-white">
                   {unreadCount}
                 </span>
               )}
             </button>
 
             {showNotifications && (
-              <div className="absolute right-0 mt-2 w-[90vw] max-w-96 sm:w-96 bg-gray-900 border border-cyan-500/30 rounded-xl shadow-2xl overflow-hidden z-[9999]">
+              <div className="absolute right-0 mt-2 w-[90vw] max-w-sm bg-gray-900 border border-primary/30 rounded-xl shadow-2xl overflow-hidden z-[9999]">
                 <div className="bg-gradient-to-r from-cyan-600 to-blue-600 p-4 flex justify-between items-center">
                   <div>
                     <h3 className="text-white font-bold">Notifications</h3>
@@ -159,24 +123,17 @@ const Navbar = ({ sidebarOpen, setSidebarOpen }) => {
                   </div>
                   <div className="flex gap-2">
                     {unreadCount > 0 && (
-                      <button 
-                        onClick={markAllAsRead}
-                        className="text-white text-xs bg-white/20 hover:bg-white/30 px-2 py-1 rounded transition"
-                      >
-                        Mark all read
+                      <button onClick={markAllAsRead} className="text-white text-xs bg-white/20 hover:bg-white/30 px-2 py-1 rounded">
+                        Mark all
                       </button>
                     )}
                     {notifications.length > 0 && (
-                      <button 
-                        onClick={clearAll}
-                        className="text-white text-xs bg-red-500/30 hover:bg-red-500/50 px-2 py-1 rounded transition"
-                      >
+                      <button onClick={clearAll} className="text-white text-xs bg-red-500/30 hover:bg-red-500/50 px-2 py-1 rounded">
                         Clear
                       </button>
                     )}
                   </div>
                 </div>
-
                 <div className="max-h-96 overflow-y-auto">
                   {notifications.length === 0 ? (
                     <div className="p-8 text-center text-gray-500">
@@ -195,14 +152,9 @@ const Navbar = ({ sidebarOpen, setSidebarOpen }) => {
                         <div className="flex items-start gap-3">
                           <div className="mt-1">{getIcon(notif.type)}</div>
                           <div className="flex-1">
-                            <div className="flex items-center gap-2">
-                              <h4 className={`font-semibold text-sm ${notif.read ? 'text-gray-400' : 'text-white'}`}>
-                                {notif.title}
-                              </h4>
-                              {!notif.read && (
-                                <span className="w-2 h-2 bg-cyan-500 rounded-full animate-pulse"></span>
-                              )}
-                            </div>
+                            <h4 className={`font-semibold text-sm ${notif.read ? 'text-gray-400' : 'text-white'}`}>
+                              {notif.title}
+                            </h4>
                             <p className="text-xs text-gray-500 mt-1">📍 {notif.location}</p>
                             <p className="text-xs text-gray-600 mt-1">🕐 {notif.time}</p>
                           </div>
@@ -211,14 +163,10 @@ const Navbar = ({ sidebarOpen, setSidebarOpen }) => {
                     ))
                   )}
                 </div>
-
                 <div className="bg-gray-800/50 p-3 text-center border-t border-gray-700">
                   <button
-                    onClick={() => {
-                      setShowNotifications(false);
-                      navigate('/alerts');
-                    }}
-                    className="text-cyan-400 text-sm font-semibold hover:text-cyan-300 transition"
+                    onClick={() => { setShowNotifications(false); navigate('/alerts'); }}
+                    className="text-cyan-400 text-sm font-semibold hover:text-cyan-300"
                   >
                     View All Alerts →
                   </button>
@@ -231,13 +179,13 @@ const Navbar = ({ sidebarOpen, setSidebarOpen }) => {
           <div className="relative" ref={profileRef}>
             <button
               onClick={() => setShowProfile(!showProfile)}
-              className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-gradient-to-br from-primary to-green-400 flex items-center justify-center cursor-pointer hover:scale-110 transition"
+              className="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-green-400 flex items-center justify-center cursor-pointer hover:scale-105 transition shadow-lg"
             >
-              <span className="text-xs sm:text-sm font-bold">A</span>
+              <span className="text-sm font-bold text-white">A</span>
             </button>
 
             {showProfile && (
-              <div className="absolute right-0 mt-2 w-[90vw] max-w-xs sm:w-72 bg-gray-900 border border-cyan-500/30 rounded-xl shadow-2xl overflow-hidden z-[9999]">
+              <div className="absolute right-0 mt-2 w-[90vw] max-w-xs bg-gray-900 border border-primary/30 rounded-xl shadow-2xl overflow-hidden z-[9999]">
                 <div className="bg-gradient-to-r from-cyan-600 to-blue-600 p-5 text-center">
                   <div className="w-16 h-16 rounded-full bg-white/20 mx-auto flex items-center justify-center mb-2 border-2 border-white">
                     <span className="text-2xl font-bold text-white">A</span>
@@ -248,44 +196,59 @@ const Navbar = ({ sidebarOpen, setSidebarOpen }) => {
                     Founder & CEO
                   </span>
                 </div>
-
                 <div className="py-2">
-                  <button
-                    onClick={() => {
-                      setShowProfile(false);
-                      navigate('/about');
-                    }}
-                    className="w-full px-5 py-3 text-left hover:bg-gray-800 flex items-center gap-3 text-gray-300 hover:text-white transition"
-                  >
-                    <span>👤</span>
-                    <span>About Me</span>
+                  <button onClick={() => { setShowProfile(false); navigate('/about'); }} className="w-full px-5 py-3 text-left hover:bg-gray-800 flex items-center gap-3 text-gray-300 hover:text-white">
+                    <span>👤</span><span>About Me</span>
                   </button>
-                  <button
-                    onClick={() => {
-                      setShowProfile(false);
-                      navigate('/settings');
-                    }}
-                    className="w-full px-5 py-3 text-left hover:bg-gray-800 flex items-center gap-3 text-gray-300 hover:text-white transition"
-                  >
-                    <span>⚙️</span>
-                    <span>Settings</span>
+                  <button onClick={() => { setShowProfile(false); navigate('/settings'); }} className="w-full px-5 py-3 text-left hover:bg-gray-800 flex items-center gap-3 text-gray-300 hover:text-white">
+                    <span>⚙️</span><span>Settings</span>
                   </button>
-                  <button
-                    onClick={() => {
-                      setShowProfile(false);
-                      navigate('/contact');
-                    }}
-                    className="w-full px-5 py-3 text-left hover:bg-gray-800 flex items-center gap-3 text-gray-300 hover:text-white transition"
-                  >
-                    <span>📧</span>
-                    <span>Contact Support</span>
+                  <button onClick={() => { setShowProfile(false); navigate('/contact'); }} className="w-full px-5 py-3 text-left hover:bg-gray-800 flex items-center gap-3 text-gray-300 hover:text-white">
+                    <span>📧</span><span>Contact Support</span>
                   </button>
                 </div>
               </div>
             )}
           </div>
+
+          {/* Mobile Hamburger */}
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden p-2 rounded-lg hover:bg-dark-700 transition-colors"
+          >
+            {mobileMenuOpen ? <HiX size={24} /> : <HiMenu size={24} />}
+          </button>
         </div>
       </div>
+
+      {/* MOBILE DROPDOWN MENU */}
+      {mobileMenuOpen && (
+        <div className="md:hidden border-t border-primary/10 bg-dark-900/98 backdrop-blur-xl">
+          <div className="px-4 py-3 space-y-1">
+            {navLinks.map((link) => (
+              <Link
+                key={link.path}
+                to={link.path}
+                onClick={() => setMobileMenuOpen(false)}
+                className={`block px-4 py-3 rounded-lg text-sm font-medium transition-all ${
+                  location.pathname === link.path
+                    ? 'bg-primary/15 text-primary'
+                    : 'text-gray-300 hover:bg-dark-700 hover:text-white'
+                }`}
+              >
+                {link.name}
+              </Link>
+            ))}
+            <Link
+              to="/monitoring"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block mt-3 px-4 py-3 rounded-lg bg-gradient-to-r from-primary to-secondary text-white text-center font-semibold"
+            >
+              Start Monitoring →
+            </Link>
+          </div>
+        </div>
+      )}
     </nav>
   );
 };

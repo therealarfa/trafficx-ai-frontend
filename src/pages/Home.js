@@ -111,27 +111,38 @@ const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <div className="space-y-6">
-<div className="glass-card p-4 sm:p-6 md:p-8 bg-gradient-to-r from-dark-800 to-dark-700 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
-        <div className="relative z-10">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="status-dot online" />
-            <span className="text-sm text-green-400 font-medium">System Active</span>
-          </div>
-<h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3">
-              <span className="gradient-text">TrafficX AI</span>
-          </h1>
-<p className="text-base sm:text-lg md:text-xl text-gray-300 mb-6">AI-Based Smart Traffic Monitoring System</p>
-          <div className="flex flex-wrap gap-3">
-            <Link to="/monitoring" className="glow-btn flex items-center gap-2">
-              <HiLightningBolt /> Start Monitoring
-            </Link>
-            <Link to="/analytics" className="px-6 py-3 rounded-xl border border-primary/30 text-primary hover:bg-primary/10 font-medium flex items-center gap-2">
-              <HiChartBar /> View Dashboard
-            </Link>
-          </div>
-        </div>
-      </div>
+<div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-dark-800 via-dark-700 to-dark-800 border border-primary/20 p-6 sm:p-10 md:p-14">
+  <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
+  <div className="absolute bottom-0 left-0 w-72 h-72 bg-secondary/10 rounded-full blur-3xl" />
+  
+  <div className="relative z-10 max-w-3xl">
+    {/* Badge */}
+    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-500/10 border border-green-500/30 mb-4">
+      <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+      <span className="text-xs text-green-400 font-semibold uppercase tracking-wide">System Active</span>
+    </div>
+    
+    {/* Title */}
+    <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 leading-tight">
+      <span className="gradient-text">TrafficX AI</span>
+    </h1>
+    
+    {/* Description */}
+    <p className="text-base sm:text-lg text-gray-400 mb-8 leading-relaxed max-w-2xl">
+      AI-Based Smart Traffic Monitoring System for Lahore. Real-time vehicle detection, congestion analysis, and emergency alerts powered by YOLOv8.
+    </p>
+    
+    {/* Buttons */}
+    <div className="flex flex-col sm:flex-row gap-3">
+      <Link to="/monitoring" className="px-6 py-3 rounded-xl bg-gradient-to-r from-primary to-secondary text-white font-semibold flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-primary/50 transition-all">
+        <HiLightningBolt /> Start Monitoring
+      </Link>
+      <Link to="/analytics" className="px-6 py-3 rounded-xl border border-primary/40 text-primary hover:bg-primary/10 font-semibold flex items-center justify-center gap-2 transition-all">
+        <HiChartBar /> View Dashboard
+      </Link>
+    </div>
+  </div>
+</div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatsCard title="Vehicle Count" value={stats.total_vehicles_today} icon={HiTruck} color="blue" />
