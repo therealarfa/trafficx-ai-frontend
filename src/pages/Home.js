@@ -21,7 +21,7 @@ ChartJS.register(
 
 const Home = ({ setSidebarOpen }) => {
   const [selectedCamera, setSelectedCamera] = useState(null);
-const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [stats, setStats] = useState({
     total_cameras: 4,
     total_vehicles_today: 12458,
@@ -74,8 +74,8 @@ const [isModalOpen, setIsModalOpen] = useState(false);
     maintainAspectRatio: false,
     plugins: { legend: { display: false } },
     scales: {
-      x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#6b7280' } },
-      y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#6b7280' } }
+      x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#6b7280', font: { size: 10 } } },
+      y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#6b7280', font: { size: 10 } } }
     }
   };
 
@@ -110,105 +110,99 @@ const [isModalOpen, setIsModalOpen] = useState(false);
   };
 
   return (
-    <div className="space-y-6">
-<div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-dark-800 via-dark-700 to-dark-800 border border-primary/20 p-6 sm:p-10 md:p-14">
-  <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
-  <div className="absolute bottom-0 left-0 w-72 h-72 bg-secondary/10 rounded-full blur-3xl" />
-  
-  <div className="relative z-10 max-w-3xl">
-    {/* Badge */}
-    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-500/10 border border-green-500/30 mb-4">
-      <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-      <span className="text-xs text-green-400 font-semibold uppercase tracking-wide">System Active</span>
-    </div>
-    
-    {/* Title */}
-    <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 leading-tight">
-      <span className="gradient-text">TrafficX AI</span>
-    </h1>
-    
-    {/* Description */}
-    <p className="text-base sm:text-lg text-gray-400 mb-8 leading-relaxed max-w-2xl">
-      AI-Based Smart Traffic Monitoring System for Lahore. Real-time vehicle detection, congestion analysis, and emergency alerts powered by YOLOv8.
-    </p>
-    
-    {/* Buttons */}
-    <div className="flex flex-col sm:flex-row gap-3">
-      <Link to="/monitoring" className="px-6 py-3 rounded-xl bg-gradient-to-r from-primary to-secondary text-white font-semibold flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-primary/50 transition-all">
-        <HiLightningBolt /> Start Monitoring
-      </Link>
-      <Link to="/analytics" className="px-6 py-3 rounded-xl border border-primary/40 text-primary hover:bg-primary/10 font-semibold flex items-center justify-center gap-2 transition-all">
-        <HiChartBar /> View Dashboard
-      </Link>
-    </div>
-  </div>
-</div>
+    <div className="space-y-4 sm:space-y-6">
+      
+      {/* HERO SECTION */}
+      <div className="glass-card p-5 sm:p-6 md:p-8 bg-gradient-to-r from-dark-800 to-dark-700 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
+        <div className="relative z-10">
+          <div className="flex items-center gap-2 mb-2">
+            <div className="status-dot online" />
+            <span className="text-xs sm:text-sm text-green-400 font-medium">System Active</span>
+          </div>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2 sm:mb-3">
+            <span className="gradient-text">TrafficX AI</span>
+          </h1>
+          <p className="text-sm sm:text-lg md:text-xl text-gray-300 mb-4 sm:mb-6">AI-Based Smart Traffic Monitoring System</p>
+          <div className="flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-3">
+            <Link to="/monitoring" className="glow-btn flex items-center justify-center gap-2 text-sm sm:text-base">
+              <HiLightningBolt /> Start Monitoring
+            </Link>
+            <Link to="/analytics" className="px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl border border-primary/30 text-primary hover:bg-primary/10 font-medium flex items-center justify-center gap-2 text-sm sm:text-base">
+              <HiChartBar /> View Dashboard
+            </Link>
+          </div>
+        </div>
+      </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* STATS CARDS */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         <StatsCard title="Vehicle Count" value={stats.total_vehicles_today} icon={HiTruck} color="blue" />
         <StatsCard title="Congestion Level" value={stats.congestion_percentage} icon={HiChartBar} color="yellow" suffix="%" />
         <StatsCard title="Emergency Alerts" value={stats.active_alerts} icon={HiExclamation} color="red" />
         <StatsCard title="Average Speed" value={stats.avg_speed} icon={HiClock} color="green" suffix=" km/h" />
       </div>
 
-      <div className="glass-card p-6">
+      {/* LIVE CAMERAS */}
+      <div className="glass-card p-4 sm:p-6">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-bold flex items-center gap-2">
+          <h2 className="text-base sm:text-xl font-bold flex items-center gap-2">
             <HiVideoCamera className="text-primary" />
             Live Traffic Cameras
           </h2>
-          <Link to="/monitoring" className="text-primary text-sm hover:underline flex items-center gap-1">
+          <Link to="/monitoring" className="text-primary text-xs sm:text-sm hover:underline flex items-center gap-1">
             View All <HiArrowRight />
           </Link>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           {[
-  { name: 'Canal Road - Kalma Chowk', img: '/images/canal-road.jpg' },
-  { name: 'Mall Road - GPO', img: '/images/mall-road.jpg' },
-  { name: 'Jail Road - Shimla Hill', img: '/images/jail-road.jpg' },
-  { name: 'Ring Road - Thokar Niaz Baig', img: '/images/ring-road.jpg' }
-].map((cam, idx) => (
-<div 
-  key={idx} 
- onClick={() => {
-  setSelectedCamera(cam);
-  setIsModalOpen(true);
-  setSidebarOpen(false);
-}}
-  className="relative rounded-xl overflow-hidden border border-dark-500 group cursor-pointer hover:scale-105 hover:border-cyan-500 transition-all"
->
-      <div className="aspect-video bg-dark-600 flex items-center justify-center relative">
-      <img 
-        src={cam.img}
-        alt={cam.name}
-        className="w-full h-full object-cover opacity-70 group-hover:opacity-90 transition-opacity"
-      />
-      <div className="absolute top-2 left-2 flex items-center gap-1 bg-dark-900/80 rounded-full px-2 py-1">
-        <div className="status-dot online" style={{width: '6px', height: '6px'}} />
-        <span className="text-xs text-green-400">LIVE</span>
-      </div>
-      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-dark-900 to-transparent p-3">
-        <p className="text-sm font-medium text-white">{cam.name}</p>
-      </div>
-    </div>
-  </div>
-))}
+            { name: 'Canal Road - Kalma Chowk', img: '/images/canal-road.jpg' },
+            { name: 'Mall Road - GPO', img: '/images/mall-road.jpg' },
+            { name: 'Jail Road - Shimla Hill', img: '/images/jail-road.jpg' },
+            { name: 'Ring Road - Thokar Niaz Baig', img: '/images/ring-road.jpg' }
+          ].map((cam, idx) => (
+            <div 
+              key={idx} 
+              onClick={() => {
+                setSelectedCamera(cam);
+                setIsModalOpen(true);
+                if (setSidebarOpen) setSidebarOpen(false);
+              }}
+              className="relative rounded-xl overflow-hidden border border-dark-500 group cursor-pointer hover:scale-105 hover:border-cyan-500 transition-all"
+            >
+              <div className="aspect-video bg-dark-600 flex items-center justify-center relative">
+                <img 
+                  src={cam.img}
+                  alt={cam.name}
+                  className="w-full h-full object-cover opacity-70 group-hover:opacity-90 transition-opacity"
+                />
+                <div className="absolute top-2 left-2 flex items-center gap-1 bg-dark-900/80 rounded-full px-2 py-1">
+                  <div className="status-dot online" style={{width: '6px', height: '6px'}} />
+                  <span className="text-xs text-green-400">LIVE</span>
+                </div>
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-dark-900 to-transparent p-3">
+                  <p className="text-xs sm:text-sm font-medium text-white">{cam.name}</p>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 glass-card p-6">
-          <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
+      {/* CHARTS */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+        <div className="lg:col-span-2 glass-card p-4 sm:p-6">
+          <h3 className="text-base sm:text-lg font-bold mb-4 flex items-center gap-2">
             <HiChartBar className="text-primary" />
             Hourly Traffic Flow
           </h3>
-          <div className="h-72">
+          <div className="h-56 sm:h-72">
             <Line data={hourlyChartData} options={chartOptions} />
           </div>
         </div>
 
-        <div className="glass-card p-6">
-          <h3 className="text-lg font-bold mb-4">Vehicle Distribution</h3>
+        <div className="glass-card p-4 sm:p-6">
+          <h3 className="text-base sm:text-lg font-bold mb-4">Vehicle Distribution</h3>
           <div className="h-56 flex items-center justify-center">
             <Doughnut 
               data={vehicleDoughnutData} 
@@ -216,7 +210,7 @@ const [isModalOpen, setIsModalOpen] = useState(false);
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
-                  legend: { position: 'bottom', labels: { color: '#9ca3af', font: { size: 11 }, padding: 15 } }
+                  legend: { position: 'bottom', labels: { color: '#9ca3af', font: { size: 10 }, padding: 10 } }
                 },
                 cutout: '65%',
               }}
@@ -225,61 +219,62 @@ const [isModalOpen, setIsModalOpen] = useState(false);
         </div>
       </div>
 
-      <div className="glass-card p-6">
-        <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
+      {/* CONGESTION ZONES */}
+      <div className="glass-card p-4 sm:p-6">
+        <h3 className="text-base sm:text-lg font-bold mb-4 flex items-center gap-2">
           <HiExclamation className="text-yellow-400" />
           Congestion Zones - Lahore
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
           {congestionZones.map((zone, idx) => (
-            <div key={idx} className="glass-card p-4 hover:border-primary/30 transition-all">
+            <div key={idx} className="glass-card p-3 sm:p-4 hover:border-primary/30 transition-all">
               <div className="flex items-center justify-between mb-3">
-                <h4 className="font-semibold text-white">{zone.name}</h4>
+                <h4 className="font-semibold text-white text-sm sm:text-base">{zone.name}</h4>
                 <span className={`text-xs font-bold px-2 py-1 rounded-full ${getLevelColor(zone.level)}`}>
                   {zone.level.toUpperCase()}
                 </span>
               </div>
-              <div className="w-full bg-dark-600 rounded-full h-3">
+              <div className="w-full bg-dark-600 rounded-full h-2 sm:h-3">
                 <div 
-                  className={`h-3 rounded-full ${getBarColor(zone.level)} transition-all duration-1000`}
+                  className={`h-2 sm:h-3 rounded-full ${getBarColor(zone.level)} transition-all duration-1000`}
                   style={{ width: `${zone.percent}%` }}
                 />
               </div>
-              <p className="text-sm text-gray-400 mt-2">{zone.percent}% congestion</p>
+              <p className="text-xs sm:text-sm text-gray-400 mt-2">{zone.percent}% congestion</p>
             </div>
           ))}
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="glass-card p-4 text-center">
-          <p className="text-sm text-gray-400 mb-1">System Accuracy</p>
-          <p className="text-3xl font-bold text-primary">{stats.accuracy}%</p>
+      {/* BOTTOM STATS */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+        <div className="glass-card p-3 sm:p-4 text-center">
+          <p className="text-xs text-gray-400 mb-1">System Accuracy</p>
+          <p className="text-2xl sm:text-3xl font-bold text-primary">{stats.accuracy}%</p>
         </div>
-        <div className="glass-card p-4 text-center">
-          <p className="text-sm text-gray-400 mb-1">Average FPS</p>
-          <p className="text-3xl font-bold text-green-400">{stats.fps}</p>
+        <div className="glass-card p-3 sm:p-4 text-center">
+          <p className="text-xs text-gray-400 mb-1">Average FPS</p>
+          <p className="text-2xl sm:text-3xl font-bold text-green-400">{stats.fps}</p>
         </div>
-        <div className="glass-card p-4 text-center">
-          <p className="text-sm text-gray-400 mb-1">AI Model</p>
-          <p className="text-xl font-bold text-cyan-400">YOLOv8 Active</p>
+        <div className="glass-card p-3 sm:p-4 text-center">
+          <p className="text-xs text-gray-400 mb-1">AI Model</p>
+          <p className="text-base sm:text-xl font-bold text-cyan-400">YOLOv8</p>
         </div>
-        <div className="glass-card p-4 text-center">
-          <p className="text-sm text-gray-400 mb-1">Supported Cameras</p>
-          <p className="text-3xl font-bold text-purple-400">124</p>
+        <div className="glass-card p-3 sm:p-4 text-center">
+          <p className="text-xs text-gray-400 mb-1">Cameras</p>
+          <p className="text-2xl sm:text-3xl font-bold text-purple-400">124</p>
         </div>
-           
       </div>
       
-      {/* Camera Detail Modal */}
+      {/* Camera Modal */}
       <CameraModal
-  camera={selectedCamera}
-  isOpen={isModalOpen}
-  onClose={() => {
-    setIsModalOpen(false);
-    setSidebarOpen(true);
-  }}
-/>
+        camera={selectedCamera}
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+          if (setSidebarOpen) setSidebarOpen(true);
+        }}
+      />
     </div>
   );
 };
