@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { 
   HiHome, HiVideoCamera, HiChartBar, HiExclamation,
-  HiDocumentReport, HiInformationCircle, HiMail, HiCog, HiX
+  HiDocumentReport, HiInformationCircle, HiMail, HiCog
 } from 'react-icons/hi';
 
 const Sidebar = ({ isOpen, setSidebarOpen }) => {
@@ -20,19 +20,17 @@ const Sidebar = ({ isOpen, setSidebarOpen }) => {
   ];
 
   const handleLinkClick = () => {
-    // Mobile pe link click hone par sidebar close
-    if (window.innerWidth < 768) {
+    if (window.innerWidth < 768 && setSidebarOpen) {
       setSidebarOpen(false);
     }
   };
 
   return (
     <>
-      {/* Mobile Overlay - jab sidebar open ho mobile pe */}
       {isOpen && (
         <div 
           className="fixed inset-0 bg-black/60 z-30 md:hidden"
-          onClick={() => setSidebarOpen(false)}
+          onClick={() => setSidebarOpen && setSidebarOpen(false)}
         />
       )}
 
