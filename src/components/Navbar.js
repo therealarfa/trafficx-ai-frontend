@@ -129,7 +129,7 @@ const Navbar = ({ sidebarOpen, setSidebarOpen }) => {
                 read: false
               };
               setNotifications([newNotif, ...notifications]);
-              const audio = new Audio('/sounds/sound.mp3');
+              const audio = new Audio('/sounds/notify.mp3');
               audio.play().catch(() => {});
             }}
 className="p-2 rounded-lg bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-400 transition-colors"            title="Add Test Notification"
