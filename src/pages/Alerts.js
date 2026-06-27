@@ -25,7 +25,7 @@ const Alerts = () => {
 
   const playAlertSound = () => {
   if (soundEnabled) {
-    const audio = new Audio('/sounds/notification.mp3');
+    const audio = new Audio('/sounds/notify.mp3');
     audio.play().catch(() => {});
   }
 };
