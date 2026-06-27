@@ -19,7 +19,7 @@ const [isModalOpen, setIsModalOpen] = useState(false);
   { id: 4, name: 'Ring Road - Thokar Niaz Baig', vehicles: 156, congestion: 'low', img: '/images/ring-road.jpg' },
   { id: 5, name: 'Ferozepur Road', vehicles: 387, congestion: 'high', img: '/images/ferozepur-road.jpg' },
   { id: 6, name: 'GT Road - Shahdara', vehicles: 201, congestion: 'moderate', img: '/images/gt-road.jpg' },
-  { id: 7, name: 'Johar-Town', vehicles: 201, congestion: 'moderate', img: '/images/johar-town.jpg' }
+  { id: 7, name: 'Johar-Town', vehicles: 201, congestion: 'moderate', img: '/images/johar-town.jpg' },
 ];
 
   const handleFileSelect = (e) => {
